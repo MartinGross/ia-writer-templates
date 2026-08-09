@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleIdentifier</key>
+	<string>net.ia.writer.template.github-compact</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>GitHub Kompakt</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.2</string>
+	<key>CFBundleVersion</key>
+	<string>3</string>
+	<key>IATemplateAuthor</key>
+	<string>Martin</string>
+	<key>IATemplateAuthorURL</key>
+	<string>https://github.com/</string>
+	<key>IATemplateDescription</key>
+	<string>GitHub-Stil mit kleinerer Schrift und flacherer Überschriften-Skala.</string>
+	<key>IATemplateDocumentFile</key>
+	<string>document</string>
+	<key>IATemplateFooterHeight</key>
+	<integer>90</integer>
+	<key>IATemplateHeaderHeight</key>
+	<integer>90</integer>
+</dict>
+</plist>

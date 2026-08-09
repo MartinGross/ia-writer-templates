@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" media="all" href="github.css">
+</head>
+<body class="markdown-body">
+  <h1>H1</h1><h2>H2</h2><h3>H3</h3><h4>H4</h4><h5>H5</h5><h6>H6</h6>
+  <p id="p">Fließtext mit <code id="code">inline code</code>.</p>
+  <ul><li id="li">Listenpunkt</li></ul>
+  <blockquote id="bq"><p>Zitat</p></blockquote>
+  <pre id="pre"><code>codeblock</code></pre>
+  <pre id="out"></pre>
+  <script>
+    const px = s => Math.round(parseFloat(s) * 100) / 100;
+    const fs = sel => px(getComputedStyle(document.querySelector(sel)).fontSize);
+    const out = {
+      Fliesstext: fs('#p'),
+      Zeilenhoehe: px(getComputedStyle(document.querySelector('#p')).lineHeight),
+      h1: fs('h1'), h2: fs('h2'), h3: fs('h3'),
+      h4: fs('h4'), h5: fs('h5'), h6: fs('h6'),
+      Listenpunkt: fs('#li'),
+      Zitat: fs('#bq p'),
+      InlineCode: fs('#code'),
+      Codeblock: fs('#pre')
+    };
+    document.getElementById('out').textContent = JSON.stringify(out, null, 1);
+  </script>
+</body>
+</html>
