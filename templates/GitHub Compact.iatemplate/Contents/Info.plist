@@ -9,17 +9,17 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>GitHub Kompakt</string>
+	<string>GitHub Compact</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2</string>
+	<string>1.3</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>4</string>
 	<key>IATemplateAuthor</key>
 	<string>Martin</string>
 	<key>IATemplateAuthorURL</key>
 	<string>https://github.com/</string>
 	<key>IATemplateDescription</key>
-	<string>GitHub-Stil mit kleinerer Schrift und flacherer Überschriften-Skala.</string>
+	<string>GitHub document style at a smaller type scale.</string>
 	<key>IATemplateDocumentFile</key>
 	<string>document</string>
 	<key>IATemplateFooterHeight</key>

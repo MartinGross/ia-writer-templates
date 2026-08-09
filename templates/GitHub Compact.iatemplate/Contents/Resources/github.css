@@ -143,30 +143,29 @@
 
 
 /* ============================================================
-   GitHub Kompakt — Größenanpassung
+   GitHub Compact — size overrides
 
-   Bewusst OHNE @media-Einschränkung: die Vorschau in iA Writer
-   kennt einen Web- und einen PDF-Modus (Umschalter unten links).
-   Der PDF-Modus rendert mit @media print — eine auf @media screen
-   beschränkte Regel bliebe dort wirkungslos. Diese Regeln gelten
-   deshalb in allen Medien.
+   Deliberately WITHOUT any @media restriction: the iA Writer preview
+   has a Web and a PDF mode (toggle in the bottom left). PDF mode
+   renders with @media print, so a rule scoped to @media screen would
+   silently do nothing there. These rules apply in every medium.
 
-   Die Selektoren spiegeln absichtlich das Muster aus
-   github-markdown-light.css / -dark.css, damit sie bei gleicher
-   Spezifität durch die spätere Position gewinnen — in beiden Modi.
+   The selectors intentionally mirror the pattern used by
+   github-markdown-light.css / -dark.css, so that at equal specificity
+   they win by coming later — in both modes.
 
-   Zum Nachjustieren genügt es, die vier Werte unten zu ändern.
+   To retune, changing the four values below is enough.
    ============================================================ */
 
-/* Grundgröße — Original: 16px.
-   Diese eine Zahl steuert die gesamte Skala: Überschriften, Code,
-   Zitate und Listen sind in em definiert und hängen daran. */
+/* Base size — stock: 16px.
+   This single number drives the whole scale: headings, code,
+   blockquotes and lists are defined in em and follow along. */
 html:not(.night-mode) .markdown-body,
 html.night-mode .markdown-body {
   font-size: 13px;
 }
 
-/* Überschriften flacher staffeln — Original: 2em / 1.5em / 1.25em */
+/* Flatter heading scale — stock: 2em / 1.5em / 1.25em */
 html:not(.night-mode) .markdown-body h1,
 html.night-mode .markdown-body h1 {
   font-size: 1.5em;

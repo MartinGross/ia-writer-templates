@@ -1,92 +1,91 @@
 # iA Writer Templates
 
-Eigene Vorschau-Vorlagen für [iA Writer](https://ia.net/writer) (macOS).
+Custom preview templates for [iA Writer](https://ia.net/writer) on macOS.
 
-## GitHub Kompakt
+## GitHub Compact
 
-Die eingebaute GitHub-Vorlage in kleinerer Typografie. Anlass war, dass die
-Vorschau zu groß wirkte — vor allem durch das h1, das im Original doppelt so
-groß ist wie der Fließtext, in einer nur 830px breiten Spalte.
+The bundled GitHub template, at a smaller type scale. The motivation: the
+preview felt oversized — mostly because of the `h1`, which is twice the body
+size in a column only 830px wide.
 
-| Element | Original GitHub | GitHub Kompakt |
+| Element | Stock GitHub | GitHub Compact |
 |---|---|---|
-| Fließtext | 16px | **13px** |
-| Zeilenhöhe | 24px | 19,5px |
-| h1 | 32px | 19,5px |
-| h2 | 24px | 16,25px |
-| h3 | 20px | 14,3px |
+| Body text | 16px | **13px** |
+| Line height | 24px | 19.5px |
+| h1 | 32px | 19.5px |
+| h2 | 24px | 16.25px |
+| h3 | 20px | 14.3px |
 | h4 | 16px | 13px |
-| h5 / h6 | 14 / 13,6px | 11,4 / 11,05px |
-| Listen, Zitate | 16px | 13px |
-| Code (inline & Block) | 13,6px | 11,05px |
+| h5 / h6 | 14 / 13.6px | 11.4 / 11.05px |
+| Lists, blockquotes | 16px | 13px |
+| Code (inline & block) | 13.6px | 11.05px |
 
-Werte mit `tools/measure.sh` gemessen, nicht geschätzt.
+Values measured with `tools/measure.sh`, not eyeballed.
 
-### Anpassen
+### Tuning
 
-Alle Überschriften, Code, Zitate und Listen sind in `em` definiert. **Eine
-einzige Zahl** steuert die gesamte Skala — am Ende von
-`templates/GitHub Kompakt.iatemplate/Contents/Resources/github.css`:
+Headings, code, blockquotes and lists are all defined in `em`, so **a single
+number** drives the whole scale. It sits at the end of
+`templates/GitHub Compact.iatemplate/Contents/Resources/github.css`:
 
 ```css
 html:not(.night-mode) .markdown-body,
 html.night-mode .markdown-body {
-  font-size: 13px;   /* alles andere hängt daran */
+  font-size: 13px;   /* everything else follows */
 }
 ```
 
-Nach dem Ändern `CFBundleVersion` in der `Info.plist` hochzählen, sonst
-erkennt iA Writer die Vorlage unter Umständen nicht als neuer.
+After editing, bump `CFBundleVersion` in `Info.plist` — otherwise iA Writer
+may not recognize the template as newer.
 
-### Installieren
+### Installing
 
-Doppelklick auf das `.iatemplate`-Bundle — iA Writer übernimmt es. Alternativ
-über *Einstellungen → Templates → „Template installieren …"*.
+Double-click the `.iatemplate` bundle and iA Writer picks it up. Alternatively
+*Settings → Templates → "Install Template …"*.
 
-Das Bundle wird dabei in den Sandbox-Container der App kopiert
-(`~/Library/Containers/pro.writer.mac/Data/Library/`, per TCC nicht lesbar).
-Die Datei in diesem Repo bleibt die bearbeitbare Quelle.
+Installing copies the bundle into the app's sandbox container
+(`~/Library/Containers/pro.writer.mac/Data/Library/`, unreadable due to TCC).
+The file in this repo stays the editable source.
 
-Deinstallieren über *Einstellungen → Templates → „Template deinstallieren"*.
+To remove: *Settings → Templates → "Uninstall Template"*.
 
-## Zwei Fallstricke
+## Two things that will bite you
 
-**Die Vorschau hat zwei Render-Modi.** Der Umschalter sitzt unten links:
-*Web* und *PDF*. Der PDF-Modus rendert mit `@media print`. Eine Anpassung in
-`@media screen` bleibt dort wirkungslos — und fällt nicht auf, weil die
-Web-Vorschau korrekt aussieht. Die Regeln hier stehen deshalb bewusst ohne
-Media-Query. `tools/measure.sh` prüft genau das.
+**The preview has two render modes.** The toggle sits in the bottom left:
+*Web* and *PDF*. PDF mode renders with `@media print`, so a rule scoped to
+`@media screen` silently does nothing there — and you won't notice, because
+the web preview looks correct. That is why the rules here carry no media
+query at all. `tools/measure.sh` checks exactly this.
 
-**Die Selektoren brauchen das richtige Präfix.** `github-markdown-light.css`
-und `-dark.css` qualifizieren jede Regel mit `html:not(.night-mode)` bzw.
-`html.night-mode`. Ein schlichtes `.markdown-body h1 { … }` verliert die
-Spezifitätsschlacht. Overrides müssen das Muster spiegeln.
+**Selectors need the right prefix.** `github-markdown-light.css` and
+`-dark.css` qualify every rule with `html:not(.night-mode)` or
+`html.night-mode`. A plain `.markdown-body h1 { … }` loses on specificity.
+Overrides have to mirror that pattern.
 
-Nebenbei: die GitHub-Vorlage enthält keine `content-size-*`-Regeln und setzt
-`font-size` absolut in px. Die Textgrößen-Einstellung der App
-(*Darstellung → Textgrösse*, `⌘+` / `⌘−`) läuft daran vorbei. Die eingebauten
-Vorlagen (Sans, Serif, Mono, Duo, Quattro) reagieren darauf sehr wohl — sie
-mappen die Klassen in `style/typography-core.css` auf `--font-size`.
+Worth knowing: the GitHub template contains no `content-size-*` rules and sets
+`font-size` in absolute px. The app's text size setting (*View → Text Size*,
+`⌘+` / `⌘−`) has no effect on it. The bundled templates (Sans, Serif, Mono,
+Duo, Quattro) do respond — they map those classes onto `--font-size` in
+`style/typography-core.css`.
 
-## Messen
+## Measuring
 
 ```sh
-tools/measure.sh "templates/GitHub Kompakt.iatemplate"
+tools/measure.sh "templates/GitHub Compact.iatemplate"
 ```
 
-Rendert die Vorlage in Headless-Chrome und liest die berechneten
-Schriftgrößen für Web, PDF und Dark Mode aus. Alle drei müssen übereinstimmen.
+Renders the template in headless Chrome and reads back the computed font
+sizes for web, PDF and dark mode. All three must agree.
 
-Der PDF-Pfad wird simuliert, indem die Media-Queries getauscht werden. Geprüft
-wird damit die CSS-Kaskade — Spezifität und Reihenfolge — nicht die
-Seitenumbruch-Engine von WebKit.
+The PDF path is simulated by swapping the media queries. What this verifies is
+the CSS cascade — specificity and order — not WebKit's pagination engine.
 
-Voraussetzungen: Google Chrome, `python3`.
+Requires Google Chrome and `python3`.
 
-## Lizenz
+## License
 
-Die Vorlage leitet sich von der mit iA Writer ausgelieferten GitHub-Vorlage ab.
-Deren CSS stammt aus [generate-github-markdown-css](https://github.com/sindresorhus/generate-github-markdown-css)
-und steht unter MIT (Copyright © 2016 GitHub Inc.) — siehe `LICENSE.txt` im
-Bundle. Eigener Anteil sind die Größenanpassungen am Ende von `github.css`
-sowie `tools/`.
+This template derives from the GitHub template shipped with iA Writer, whose
+CSS comes from [generate-github-markdown-css](https://github.com/sindresorhus/generate-github-markdown-css)
+and is MIT licensed (Copyright © 2016 GitHub Inc.) — see `LICENSE.txt` inside
+the bundle. Original work here is the size overrides at the end of
+`github.css` plus `tools/`.
