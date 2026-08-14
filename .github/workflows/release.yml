@@ -1,0 +1,73 @@
+name: Release template
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+env:
+  BUNDLE: GitHub Compact.iatemplate
+  ASSET: GitHub-Compact.iatemplate.zip
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # previous tags, for the CFBundleVersion check
+
+      - name: Check versions against the tag
+        run: |
+          python3 - "$GITHUB_REF_NAME" <<'PY'
+          import os, plistlib, subprocess, sys
+
+          plist_path = f"templates/{os.environ['BUNDLE']}/Contents/Info.plist"
+          tag = sys.argv[1]
+
+          with open(plist_path, "rb") as f:
+              info = plistlib.load(f)
+          short, build = info["CFBundleShortVersionString"], info["CFBundleVersion"]
+
+          if tag != f"v{short}":
+              sys.exit(f"Tag {tag} does not match CFBundleShortVersionString {short} "
+                       f"— expected tag v{short}. Info.plist is the source of truth.")
+
+          # iA Writer decides "is this newer?" by CFBundleVersion. A release that
+          # ships an unbumped one installs but silently keeps the old CSS.
+          tags = subprocess.run(["git", "tag", "--list", "v*", "--sort=-v:refname"],
+                                capture_output=True, text=True, check=True).stdout.split()
+          prev = next((t for t in tags if t != tag), None)
+          if prev:
+              old = plistlib.loads(subprocess.run(
+                  ["git", "show", f"{prev}:{plist_path}"],
+                  capture_output=True, check=True).stdout)["CFBundleVersion"]
+              if int(build) <= int(old):
+                  sys.exit(f"CFBundleVersion is {build}, but {prev} already shipped {old}. "
+                           f"Bump it or iA Writer will not treat this as newer.")
+              print(f"CFBundleVersion {old} -> {build} (previous release {prev})")
+
+          print(f"{tag}: version {short}, build {build}")
+          PY
+
+      - name: Build the zip
+        run: |
+          # Top-level entry must be the bundle itself, so unzipping yields a
+          # double-clickable "GitHub Compact.iatemplate" and not a folder to dig into.
+          cd templates
+          zip -r -X "../$ASSET" "$BUNDLE"
+          cd ..
+          first=$(unzip -Z1 "$ASSET" | head -1)
+          [ "$first" = "$BUNDLE/" ] || { echo "Unexpected top-level entry: $first"; exit 1; }
+          unzip -l "$ASSET"
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "$ASSET" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes

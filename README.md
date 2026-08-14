@@ -40,14 +40,35 @@ may not recognize the template as newer.
 
 ### Installing
 
-Double-click the `.iatemplate` bundle and iA Writer picks it up. Alternatively
-*Settings → Templates → "Install Template …"*.
+[**Download the template**](https://github.com/MartinGross/ia-writer-templates/releases/latest/download/GitHub-Compact.iatemplate.zip)
+— unzip, double-click, done. No clone needed.
+
+If you already have the repo, double-click
+`templates/GitHub Compact.iatemplate` instead. Either way you can also go
+through *Settings → Templates → "Install Template …"*.
 
 Installing copies the bundle into the app's sandbox container
 (`~/Library/Containers/pro.writer.mac/Data/Library/`, unreadable due to TCC).
 The file in this repo stays the editable source.
 
 To remove: *Settings → Templates → "Uninstall Template"*.
+
+### Releasing
+
+`.github/workflows/release.yml` builds the zip and cuts the release when a
+`v*` tag is pushed. `Info.plist` is the single source of truth for versions —
+the workflow fails if the tag doesn't match `CFBundleShortVersionString`, or
+if `CFBundleVersion` wasn't bumped past the previous release. That second
+check exists because an unbumped build number installs silently and keeps the
+old CSS.
+
+```sh
+# edit CFBundleShortVersionString + CFBundleVersion, commit, then:
+git tag v1.4 && git push origin v1.4
+```
+
+The asset name stays constant across releases, which is what keeps the
+`releases/latest/download/…` link above working.
 
 ## Two things that will bite you
 
